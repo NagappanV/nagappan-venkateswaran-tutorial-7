@@ -25,6 +25,9 @@ android {
             )
         }
     }
+    buildFeatures {
+        viewBinding = true
+    }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
@@ -41,4 +44,8 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
+    implementation("androidx.recyclerview:recyclerview:1.2.1")
+    implementation("androidx.room:room-runtime:2.3.0")
+    implementation("androidx.fragment:fragment-ktx:1.3.4")
+    annotationProcessor("androidx.room:room-compiler:2.3.0")
 }
