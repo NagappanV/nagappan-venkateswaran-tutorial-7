@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.naga.roomdemo.Product;
 import com.naga.roomdemo.ProductListAdapter;
 import com.naga.roomdemo.R;
 import com.naga.roomdemo.databinding.FragmentMainBinding;
@@ -54,6 +55,39 @@ public class MainFragment extends Fragment {
         observerSetup();
         recyclerSetup();
     }
+
+    private void listenerSetup() {
+        binding.addButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String name = binding.productName.getText().toString();
+                String quantity = binding.productQuantity.getText().toString();
+                if (!name.equals("") && !quantity.equals("")) {
+                    Product product = new Product(name,
+                            Integer.parseInt(quantity));
+                    mViewModel.insertProduct(product);
+                    clearFields();
+                } else {
+                    binding.productID.setText("Incomplete information");
+                }
+            }
+        });
+        binding.findButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mViewModel.findProduct(binding.productName.getText().toString());
+            }
+        });
+        binding.deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mViewModel.deleteProduct(binding.productName.getText().
+                        toString());
+                clearFields();
+            }
+        });
+    }
+    
     private void clearFields() {
         binding.productID.setText("");
         binding.productName.setText("");
