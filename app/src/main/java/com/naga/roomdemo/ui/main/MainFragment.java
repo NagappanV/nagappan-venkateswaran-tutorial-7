@@ -8,6 +8,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 import java.util.Locale;
@@ -91,7 +93,7 @@ public class MainFragment extends Fragment {
             }
         });
     }
-    
+
     private void observerSetup() {
         mViewModel.getAllProducts().observe(getViewLifecycleOwner(),
                 new Observer<List<Product>>() {
@@ -116,6 +118,13 @@ public class MainFragment extends Fragment {
                         }
                     }
                 });
+    }
+    
+    private void recyclerSetup() {
+        adapter = new ProductListAdapter(R.layout.product_list_item);
+        binding.productRecycler.setLayoutManager(
+                new LinearLayoutManager(getContext()));
+        binding.productRecycler.setAdapter(adapter);
     }
 
     private void clearFields() {
