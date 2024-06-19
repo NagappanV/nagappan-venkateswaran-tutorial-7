@@ -12,11 +12,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.naga.roomdemo.ProductListAdapter;
 import com.naga.roomdemo.R;
+import com.naga.roomdemo.databinding.FragmentMainBinding;
+
 
 public class MainFragment extends Fragment {
-
     private MainViewModel mViewModel;
+    private FragmentMainBinding binding;
+    private ProductListAdapter adapter;
 
     public static MainFragment newInstance() {
         return new MainFragment();
@@ -31,9 +35,28 @@ public class MainFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_main, container, false);
+        binding = FragmentMainBinding.inflate(inflater, container, false);
+        return binding.getRoot();
     }
-
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
+    }
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        mViewModel = new ViewModelProvider(this).get(MainViewModel.class);
+        listenerSetup();
+        observerSetup();
+        recyclerSetup();
+    }
+    private void clearFields() {
+        binding.productID.setText("");
+        binding.productName.setText("");
+        binding.productQuantity.setText("");
+    }
 }
