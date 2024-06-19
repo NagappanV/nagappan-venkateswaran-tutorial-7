@@ -7,6 +7,10 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+
+import java.util.List;
+import java.util.Locale;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -88,9 +92,37 @@ public class MainFragment extends Fragment {
         });
     }
     
+    private void observerSetup() {
+        mViewModel.getAllProducts().observe(getViewLifecycleOwner(),
+                new Observer<List<Product>>() {
+                    @Override
+                    public void onChanged(@Nullable final List<Product> products) {
+                        adapter.setProductList(products);
+                    }
+                });
+        mViewModel.getSearchResults().observe(getViewLifecycleOwner(),
+                new Observer<List<Product>>() {
+                    @Override
+                    public void onChanged(@Nullable final List<Product> products) {
+                        if (products.size() > 0) {
+                            binding.productID.setText(String.format(Locale.US, "%d",
+                                    products.get(0).getId()));
+                            binding.productName.setText(products.get(0).getName());
+                            binding.productQuantity.setText(String.format(Locale.US,
+                                    "%d",
+                                    products.get(0).getQuantity()));
+                        } else {
+                            binding.productID.setText("No Match");
+                        }
+                    }
+                });
+    }
+
     private void clearFields() {
         binding.productID.setText("");
         binding.productName.setText("");
         binding.productQuantity.setText("");
     }
+
+
 }
